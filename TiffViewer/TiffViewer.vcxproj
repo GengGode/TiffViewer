@@ -118,12 +118,14 @@
     <QtUic Include="common\RenderLabel.ui" />
     <QtUic Include="TiffViewer.ui" />
     <QtMoc Include="TiffViewer.h" />
+    <ClCompile Include="common\BorderManage.cpp" />
     <ClCompile Include="common\RenderLabel.cpp" />
     <ClCompile Include="ConvertUtils.cpp" />
     <ClCompile Include="TiffViewer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="common\BorderManage.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="common\RenderLabel.h" />
     <ClInclude Include="ConvertUtils.h" />

@@ -4,6 +4,7 @@
 #include "ui_TiffViewer.h"
 
 #include "common/RenderLabel.h"
+#include "common/BorderManage.h"
 
 
 class TiffViewer : public QWidget
@@ -18,6 +19,7 @@ private:
     Ui::TiffViewerClass ui;
 private:
     RenderLabel* render_label = nullptr;
+	BorderManage* border_manage = nullptr;
 private:
     bool is_endless_loop = false;
 private:
@@ -30,6 +32,7 @@ private:
     void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 private:
     void set_title_file(const std::string& file_name);
     void set_param_reset();

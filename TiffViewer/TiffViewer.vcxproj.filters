@@ -46,6 +46,9 @@
     <ClCompile Include="common\RenderLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="common\BorderManage.cpp">
+      <Filter>Form Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvertUtils.h">
@@ -61,6 +64,9 @@
   <ItemGroup>
     <QtMoc Include="common\RenderLabel.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="common\BorderManage.h">
+      <Filter>Form Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

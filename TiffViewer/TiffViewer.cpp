@@ -27,18 +27,23 @@ TiffViewer::TiffViewer(QWidget *parent)
 	this->setWindowIcon(QIcon(":/TiffViewer/icon.ico"));
 	
 	// 添加白色背景
-	QLabel* label_background = new QLabel(this);
-	label_background->setGeometry(8, 8, this->width()-16, this->height()-16);
-	label_background->setStyleSheet("background-color: rgba(128,128,128,128);border-radius:8px;");
-	label_background->lower();
+	//QLabel* label_background = new QLabel(this);
+	//label_background->setGeometry(8, 8, this->width()-16, this->height()-16);
+	//label_background->setStyleSheet("background-color: rgba(128,128,128,128);border-radius:8px;");
+	//label_background->lower();
 	
 	// 添加阴影
 #ifndef USED_DWM_EDDECT
-	QGraphicsDropShadowEffect* mainShadow = new QGraphicsDropShadowEffect();
-	mainShadow->setOffset(0, 4);
-	mainShadow->setColor(QColor(0, 0, 0));
-	mainShadow->setBlurRadius(12);
-	label_background->setGraphicsEffect(mainShadow);
+	QGraphicsDropShadowEffect* title_shadow = new QGraphicsDropShadowEffect();
+	title_shadow->setOffset(0, 4);
+	title_shadow->setColor(QColor(0, 0, 0));
+	title_shadow->setBlurRadius(12);
+	ui.widget_title->setGraphicsEffect(title_shadow);
+	QGraphicsDropShadowEffect* client_shadow = new QGraphicsDropShadowEffect();
+	client_shadow->setOffset(0, 4);
+	client_shadow->setColor(QColor(0, 0, 0));
+	client_shadow->setBlurRadius(12);
+	ui.widget_client->setGraphicsEffect(client_shadow);
 #else
 	DWM_BLURBEHIND bb = { 0 };
 	bb.dwFlags = DWM_BB_ENABLE;
@@ -51,6 +56,9 @@ TiffViewer::TiffViewer(QWidget *parent)
 	render_label = new RenderLabel(ui.widget_render);
 	render_label->setObjectName(QString::fromUtf8("render_label"));
 	ui.gridLayout_2->addWidget(render_label, 2, 0, 1, 1);
+	
+	// 添加标题栏
+	border_manage = new BorderManage(this, 200, 200, 5);
 
 	// 添加字体
 	int text_font = QFontDatabase::addApplicationFont(":/font/Segoe UI.ttf");
@@ -119,6 +127,14 @@ void TiffViewer::mouseMoveEvent(QMouseEvent* event)
 void TiffViewer::mouseReleaseEvent(QMouseEvent* event)
 {
 	move_left_is_clicked = false;
+}
+void TiffViewer::paintEvent(QPaintEvent* event)
+{
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing, true);
+	painter.setPen(Qt::NoPen);
+	painter.setBrush(QColor(255, 255, 255));
+	painter.drawRoundedRect(QRect(8, 8, this->width() - 16, this->height() - 16), 8, 8);
 }
 #pragma endregion
 
