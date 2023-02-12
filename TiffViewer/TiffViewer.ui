@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>764</width>
-    <height>615</height>
+    <width>869</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -464,9 +464,15 @@ border: 1px solid rgb(230, 230, 230) ;
          </item>
          <item>
           <widget class="QWidget" name="widget_zoom" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>121</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>86</width>
+             <width>121</width>
              <height>16777215</height>
             </size>
            </property>
@@ -494,10 +500,34 @@ border: 1px solid rgb(230, 230, 230) ;
              <string>Up</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="pb_zoom_out">
+           <widget class="QPushButton" name="pb_zoom_reset">
             <property name="geometry">
              <rect>
               <x>45</x>
+              <y>10</y>
+              <width>31</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe Fluent Icons</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>[]</string>
+            </property>
+            <property name="shortcut">
+             <string>Down</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pb_zoom_out">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
               <y>10</y>
               <width>31</width>
               <height>31</height>

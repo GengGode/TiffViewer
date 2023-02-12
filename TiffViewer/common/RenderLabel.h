@@ -66,6 +66,7 @@ private:
 	void inverse_color(bool is_inverse = false);
 	void zoom_in();
 	void zoom_out();
+	void zoom_reset();
 public slots:
 	/// <summary>
 	/// ¸üĞÂÊÓÍ¼
@@ -80,6 +81,7 @@ public slots:
 	void set_inverse_color(bool is_inverse) { inverse_color(is_inverse); }
 	void set_zoom_in() { zoom_in(); }
 	void set_zoom_out() { zoom_out(); }
+	void set_zoom_reset() { zoom_reset(); }
 	void set_adaptive_view() { adaptive_view(); }
 signals:
 	void signal_open_file();

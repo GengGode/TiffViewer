@@ -201,6 +201,14 @@ void RenderLabel::zoom_out()
 	is_update_transformed = true;
 }
 
+void RenderLabel::zoom_reset()
+{
+	// Zoom Reset
+	view_scale_last = view_scale;
+	view_scale = 1.0f;
+	is_update_transformed = true;
+}
+
 #pragma region 鼠标和重绘事件
 void RenderLabel::mousePressEvent(QMouseEvent* event)
 {

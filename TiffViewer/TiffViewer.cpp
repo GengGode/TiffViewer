@@ -77,6 +77,8 @@ TiffViewer::TiffViewer(QWidget *parent)
 	// 放大缩小
 	connect(ui.pb_zoom_in, &QPushButton::clicked, render_label, &RenderLabel::set_zoom_in);
 	connect(ui.pb_zoom_out, &QPushButton::clicked, render_label, &RenderLabel::set_zoom_out);
+	connect(ui.pb_zoom_reset, &QPushButton::clicked, render_label, &RenderLabel::set_zoom_reset);
+	
 	
 	// 亮度拖动条
 	connect(ui.slider_brightness, &QSlider::valueChanged, render_label, &RenderLabel::set_brightness);
