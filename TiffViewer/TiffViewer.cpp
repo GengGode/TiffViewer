@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QFontDatabase>
 #include <QFileDialog>
+#include <QDesktopWidget>
 #ifndef USED_DWM_EDDECT
 #include <QGraphicsDropShadowEffect>
 #else
@@ -25,12 +26,6 @@ TiffViewer::TiffViewer(QWidget *parent)
 	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
 	this->setWindowIcon(QIcon(":/TiffViewer/icon.ico"));
-	
-	// 添加白色背景
-	//QLabel* label_background = new QLabel(this);
-	//label_background->setGeometry(8, 8, this->width()-16, this->height()-16);
-	//label_background->setStyleSheet("background-color: rgba(128,128,128,128);border-radius:8px;");
-	//label_background->lower();
 	
 	// 添加阴影
 #ifndef USED_DWM_EDDECT
@@ -57,7 +52,7 @@ TiffViewer::TiffViewer(QWidget *parent)
 	render_label->setObjectName(QString::fromUtf8("render_label"));
 	ui.gridLayout_2->addWidget(render_label, 2, 0, 1, 1);
 	
-	// 添加标题栏
+	// 添加可拖动边框
 	border_manage = new BorderManage(this, 200, 200, 5);
 
 	// 添加字体
@@ -78,10 +73,6 @@ TiffViewer::TiffViewer(QWidget *parent)
 	}
 	
 #pragma endregion
-	
-	connect(ui.pb_exit, &QPushButton::clicked, this, &TiffViewer::close);
-	connect(ui.pb_mini, &QPushButton::clicked, this, &TiffViewer::showMinimized);
-	connect(ui.pb_max, &QPushButton::clicked, this, &TiffViewer::showMaximized);
 	
 	// 放大缩小
 	connect(ui.pb_zoom_in, &QPushButton::clicked, render_label, &RenderLabel::set_zoom_in);
@@ -204,6 +195,36 @@ bool TiffViewer::load_tiff_file(const std::string& file)
 
 	render_label->set_render_mat(tiff_8bit_mat);
 	return true;
+}
+
+void TiffViewer::on_pb_exit_clicked()
+{
+	close();
+}
+void TiffViewer::on_pb_mini_clicked()
+{
+	showMinimized();
+}
+
+void TiffViewer::on_pb_max_clicked()
+{
+	static bool is_max = false;
+	static QRect normal_rect = this->geometry();
+	if (is_max)
+	{
+		showNormal();
+		this->setGeometry(normal_rect);
+		is_max = false;
+	}
+	else
+	{
+		normal_rect = this->geometry();
+		showMaximized();
+		auto rect = QApplication::desktop()->availableGeometry();
+		rect = rect.marginsRemoved(QMargins(-8, -8,-8, -8));
+		setGeometry(rect);
+		is_max = true;
+	}
 }
 
 void TiffViewer::on_pb_open_clicked()

@@ -38,6 +38,9 @@ private:
     void set_param_reset();
     bool load_tiff_file(const std::string& file);
 private slots:
+    void on_pb_exit_clicked();
+    void on_pb_mini_clicked();
+    void on_pb_max_clicked();
     void on_pb_open_clicked();
     void on_pb_about_clicked();
     void on_pb_left_back_clicked();
