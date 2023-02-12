@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QFontDatabase>
 #include <QFileDialog>
 #ifndef USED_DWM_EDDECT
 #include <QGraphicsDropShadowEffect>
@@ -23,6 +24,7 @@ TiffViewer::TiffViewer(QWidget *parent)
 #pragma region 窗口设置
 	this->setWindowFlags(Qt::FramelessWindowHint);
 	this->setAttribute(Qt::WA_TranslucentBackground, true);
+	this->setWindowIcon(QIcon(":/TiffViewer/icon.ico"));
 	
 	// 添加白色背景
 	QLabel* label_background = new QLabel(this);
@@ -49,11 +51,33 @@ TiffViewer::TiffViewer(QWidget *parent)
 	render_label = new RenderLabel(ui.widget_render);
 	render_label->setObjectName(QString::fromUtf8("render_label"));
 	ui.gridLayout_2->addWidget(render_label, 2, 0, 1, 1);
+
+	// 添加字体
+	int text_font = QFontDatabase::addApplicationFont(":/font/Segoe UI.ttf");
+	QStringList text_font_ids = QFontDatabase::applicationFontFamilies(text_font);
+	if (!text_font_ids.isEmpty())
+	{
+		QFont font(text_font_ids.first());
+		this->setFont(font);
+	}
+	int icon_font = QFontDatabase::addApplicationFont(":/font/Segoe Fluent Icons.ttf");
+	QStringList icon_font_ids = QFontDatabase::applicationFontFamilies(icon_font);
+	if (!icon_font_ids.isEmpty()) {
+		QFont font(icon_font_ids.first());
+		ui.pb_exit->setFont(font);
+		ui.pb_mini->setFont(font);
+		ui.pb_max->setFont(font);
+	}
+	
 #pragma endregion
 	
 	connect(ui.pb_exit, &QPushButton::clicked, this, &TiffViewer::close);
 	connect(ui.pb_mini, &QPushButton::clicked, this, &TiffViewer::showMinimized);
 	connect(ui.pb_max, &QPushButton::clicked, this, &TiffViewer::showMaximized);
+	
+	// 放大缩小
+	connect(ui.pb_zoom_in, &QPushButton::clicked, render_label, &RenderLabel::set_zoom_in);
+	connect(ui.pb_zoom_out, &QPushButton::clicked, render_label, &RenderLabel::set_zoom_out);
 	
 	// 亮度拖动条
 	connect(ui.slider_brightness, &QSlider::valueChanged, render_label, &RenderLabel::set_brightness);
@@ -136,9 +160,8 @@ bool TiffViewer::load_tiff_file(const std::string& file)
 		label->setGeometry(0, 0, 300, 100);
 		label->setAlignment(Qt::AlignCenter);
 
-		dialog->show();
-		//dialog->deleteLater();
-
+		dialog->show();	
+		dialog->setAttribute(Qt::WA_DeleteOnClose);
 	}
 	if (is_load_success == false)
 	{
@@ -183,9 +206,23 @@ void TiffViewer::on_pb_open_clicked()
 	}
 }
 
-void TiffViewer::on_pb_close_clicked()
+void TiffViewer::on_pb_about_clicked()
 {
-	close();
+	QDialog* dialog = new QDialog(this);
+	dialog->setWindowTitle("About");
+
+	QLabel* label = new QLabel(dialog);
+	// 从qrc加载txt
+	QFile file(":/TiffViewer/LICENSE");
+	file.open(QIODevice::ReadOnly);
+	QString license = file.readAll();
+	file.close();
+	label->setText("TiffViewer\n\nAuthor: gengkl200@163.com\n\nVersion: 1.0.0\n\n" + license);
+	label->setGeometry(0, 0, 500, 500);
+	label->setAlignment(Qt::AlignCenter);
+
+	dialog->show();
+	dialog->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void TiffViewer::on_pb_left_back_clicked()

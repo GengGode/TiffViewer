@@ -1,4 +1,12 @@
 <RCC>
-    <qresource prefix="TiffViewer">
-    </qresource>
+  <qresource prefix="/TiffViewer">
+    <file>TiffViewer.rc</file>
+    <file>icon.ico</file>
+    <file>icon.png</file>
+    <file>LICENSE</file>
+  </qresource>
+  <qresource prefix="/font">
+    <file>Segoe Fluent Icons.ttf</file>
+    <file>Segoe UI.ttf</file>
+  </qresource>
 </RCC>

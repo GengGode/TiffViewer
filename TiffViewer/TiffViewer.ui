@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>600</height>
+    <width>764</width>
+    <height>615</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -103,13 +103,19 @@ border-bottom-right-radius: 0px;
         <property name="text">
          <string/>
         </property>
+        <property name="pixmap">
+         <pixmap resource="TiffViewer.qrc">:/TiffViewer/icon.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_title">
         <property name="font">
          <font>
-          <family>Segoe UI Variable</family>
+          <family>Segoe UI</family>
           <pointsize>14</pointsize>
          </font>
         </property>
@@ -130,7 +136,7 @@ border-bottom-right-radius: 0px;
        <widget class="QWidget" name="widget" native="true">
         <property name="maximumSize">
          <size>
-          <width>138</width>
+          <width>184</width>
           <height>32</height>
          </size>
         </property>
@@ -140,7 +146,7 @@ border-bottom-right-radius: 0px;
         <widget class="QPushButton" name="pb_mini">
          <property name="geometry">
           <rect>
-           <x>0</x>
+           <x>46</x>
            <y>0</y>
            <width>46</width>
            <height>32</height>
@@ -171,7 +177,7 @@ background-color: rgb(204, 204, 204);
         <widget class="QPushButton" name="pb_exit">
          <property name="geometry">
           <rect>
-           <x>92</x>
+           <x>138</x>
            <y>0</y>
            <width>46</width>
            <height>32</height>
@@ -207,7 +213,7 @@ border:none;
         <widget class="QPushButton" name="pb_max">
          <property name="geometry">
           <rect>
-           <x>46</x>
+           <x>92</x>
            <y>0</y>
            <width>46</width>
            <height>32</height>
@@ -233,6 +239,37 @@ background-color: rgb(204, 204, 204);
          </property>
          <property name="text">
           <string></string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pb_about">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>46</width>
+           <height>32</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+background-color: rgba(0, 0, 0,0);
+border:none;
+color:rgb(0, 0, 0);
+}
+QPushButton:hover{
+background-color: rgb(229, 229, 229);
+}
+QPushButton:pressed{
+background-color: rgb(204, 204, 204);
+}</string>
+         </property>
+         <property name="text">
+          <string>Abuout</string>
          </property>
         </widget>
        </widget>
@@ -315,10 +352,6 @@ QPushButton:pressed{
 background-color: rgb(215, 215, 215);
 border: 1px solid rgb(230, 230, 230) ;
 }
-QPushButton:checked{
-background-color: rgb(215, 215, 215);
-border: 1px solid rgb(230, 230, 230) ;
-}
 </string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -350,6 +383,11 @@ border: 1px solid rgb(230, 230, 230) ;
               <width>81</width>
               <height>31</height>
              </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -383,6 +421,11 @@ border: 1px solid rgb(230, 230, 230) ;
               <height>31</height>
              </rect>
             </property>
+            <property name="font">
+             <font>
+              <family>Segoe Fluent Icons</family>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
@@ -401,6 +444,11 @@ border: 1px solid rgb(230, 230, 230) ;
               <width>31</width>
               <height>31</height>
              </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe Fluent Icons</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -431,6 +479,11 @@ border: 1px solid rgb(230, 230, 230) ;
               <height>31</height>
              </rect>
             </property>
+            <property name="font">
+             <font>
+              <family>Segoe Fluent Icons</family>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
@@ -449,6 +502,11 @@ border: 1px solid rgb(230, 230, 230) ;
               <width>31</width>
               <height>31</height>
              </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe Fluent Icons</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -480,13 +538,23 @@ border: 1px solid rgb(230, 230, 230) ;
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>20</y>
+              <y>8</y>
               <width>60</width>
-              <height>14</height>
+              <height>31</height>
              </rect>
             </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	background-color: rgba(255, 255, 255,0);
+}</string>
+            </property>
             <property name="text">
-             <string>contrast</string>
+             <string>Contrast</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -543,10 +611,20 @@ border: 1px solid rgb(230, 230, 230) ;
             <property name="geometry">
              <rect>
               <x>192</x>
-              <y>20</y>
+              <y>8</y>
               <width>60</width>
-              <height>14</height>
+              <height>31</height>
              </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+	background-color: rgba(255, 255, 255,0);
+}</string>
             </property>
             <property name="text">
              <string>Brightness</string>
@@ -563,6 +641,11 @@ border: 1px solid rgb(230, 230, 230) ;
               <width>31</width>
               <height>31</height>
              </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe Fluent Icons</family>
+             </font>
             </property>
             <property name="styleSheet">
              <string notr="true"/>

@@ -36,7 +36,7 @@ private:
     bool load_tiff_file(const std::string& file);
 private slots:
     void on_pb_open_clicked();
-    void on_pb_close_clicked();
+    void on_pb_about_clicked();
     void on_pb_left_back_clicked();
     void on_pb_right_forward_clicked();
 };

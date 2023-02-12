@@ -48,7 +48,7 @@ void RenderLabel::update_view()
 	{
 		return;
 	}
-	transform(view_scale, cv::Point(view_move.x(), view_move.y()), cv::Point(move_center.x(), move_center.y()));
+	transform(view_scale, cv::Point(view_move.x(), view_move.y()));
 	cv::Mat roi = render_mat(render_roi);
 	// Brightness or Contrast
 	if (is_update_transformed||is_update_brigheness || is_update_contrast)
@@ -58,7 +58,7 @@ void RenderLabel::update_view()
 		is_update_contrast = false;
 	}
 	// Inverse Color
-	if (is_update_transformed|| is_update_inverse_color)
+	if (is_update_transformed|| is_update_inverse_color || param_is_inverse_color)
 	{
 		if (param_is_inverse_color)
 		{
@@ -68,9 +68,10 @@ void RenderLabel::update_view()
 				is_lock_alpha = true;
 			}
 			ConvertUtils::inverse_color(roi, is_lock_alpha);
-			is_update_inverse_color = false;
 		}
+		is_update_inverse_color = false;
 	}
+	is_update_transformed = false;
 	roi.copyTo(render_mat(render_roi));
 	// Update
 	update();
@@ -78,42 +79,16 @@ void RenderLabel::update_view()
 
 void RenderLabel::transform(float scale, cv::Point offset, cv::Point center)
 {
-	render_mat = cv::Mat(width(), height(), CV_8UC4, cv::Scalar(128, 128, 128, 0));
-	// 仿射变换
-	cv::Mat affine_mat = cv::getRotationMatrix2D(center - offset , 0, scale);
-	affine_mat.at<double>(0, 2) += offset.x ;
-	affine_mat.at<double>(1, 2) += offset.y ;
-	cv::warpAffine(origin_mat, render_mat, affine_mat, cv::Size(width(), height()));
-	
-	
-	qDebug() << "move_value: [" << move_value << "]";
-	qDebug() << "move_center: [" << move_center << "]";
-	qDebug() << "move_press_value: [" << move_press_value << "]";
-	qDebug() << "offset: [" << offset.x << "," << offset.y << "]";
-	qDebug() << "center: [" << center.x << "," << center.y << "]";
-	qDebug() << "scale: " << scale << "\n";
-
-	
-
-	
-	// 【视图】的Size
+	// 【视图】
 	cv::Size viewer__size = cv::Size(width(), height());
-	// 【视图】的Rect
 	cv::Rect viewer__rect = cv::Rect(0, 0, width(), height());
-	// 生成【视图】 4通道
-	//render_mat = cv::Mat(viewer__size, CV_8UC4, cv::Scalar(128, 128, 128, 0));
+	render_mat = cv::Mat(viewer__size, CV_8UC4, cv::Scalar(128, 128, 128, 0));
 	
 	//--- 计算部分
 	// 计算【变换后图片】大小
 	cv::Size transformed_mat__size = cv::Size(cvRound(origin_mat.cols * scale), cvRound(origin_mat.rows * scale));
-	auto p = offset - center;
-	
 	// 计算【变换后图片】的Rect
-	cv::Rect transformed_mat__rect = cv::Rect(
-		offset.x + (move_center.x()- offset.x)*(view_scale - view_scale_last),
-		offset.y + (move_center.y() - offset.y) * (view_scale - view_scale_last),
-		transformed_mat__size.width, transformed_mat__size.height);
-	
+	cv::Rect transformed_mat__rect = cv::Rect(offset.x, offset.y, transformed_mat__size.width, transformed_mat__size.height);
 	// 计算【变换后图片】与【视图】的【相交区域】
 	cv::Rect intersect__rect = transformed_mat__rect & viewer__rect;
 	
@@ -163,7 +138,7 @@ void RenderLabel::transform(float scale, cv::Point offset, cv::Point center)
 		cv::cvtColor(origin_mat__intersect__transformed, origin_mat__intersect__transformed, cv::COLOR_BGR2BGRA);
 	}
 	// 将【相交区域】复制到【视图】中
-	//origin_mat__intersect__transformed.copyTo(render_mat(intersect__rect_in_viewer__rect));
+	origin_mat__intersect__transformed.copyTo(render_mat(intersect__rect_in_viewer__rect));
 	render_roi = intersect__rect_in_viewer__rect;
 }
 
@@ -174,6 +149,7 @@ void RenderLabel::adaptive_view()
 	view_move = QPoint(param.offset.x, param.offset.y);
 	move_value = view_move;
 	transform(param.scale, param.offset);
+	update();
 }
 
 void RenderLabel::brightness(const int value)
@@ -210,6 +186,8 @@ void RenderLabel::zoom_in()
 	view_scale *= 1.1f;
 	if (view_scale > 200.0f)
 		view_scale = 200.0f;
+	//view_move -= QPoint(width() / 2.0 * view_scale_last * 0.1f, height() / 2.0f * view_scale_last * 0.1f);
+	is_update_transformed = true;
 }
 
 void RenderLabel::zoom_out()
@@ -219,12 +197,8 @@ void RenderLabel::zoom_out()
 	view_scale /= 1.1f;
 	if (view_scale < 0.001f)
 		view_scale = 0.001f;
-}
-
-void RenderLabel::zoom_reset()
-{
-	// Zoom Reset
-	view_scale = 1.0f;
+	//view_move += QPoint(width() / 2.0 * view_scale_last * 0.1f, height() / 2.0f * view_scale_last * 0.1f);
+	is_update_transformed = true;
 }
 
 #pragma region 鼠标和重绘事件
@@ -242,7 +216,7 @@ void RenderLabel::mouseMoveEvent(QMouseEvent* event)
 {
 	if (move_left_is_clicked)
 	{
-		view_move = move_value + (event->globalPos() - move_press_value) / 1.0;// view_scale;
+		view_move = move_value + (event->globalPos() - move_press_value);
 		is_update_transformed = true;
 		event->accept();
 	}
@@ -263,11 +237,11 @@ void RenderLabel::mouseDoubleClickEvent(QMouseEvent* event)
 			emit signal_open_file();
 			return;
 		}
+		adaptive_view();
 		is_update_transformed = true;
 		event->accept();
 	}
 }
-
 
 void RenderLabel::wheelEvent(QWheelEvent* event)
 {
@@ -281,7 +255,6 @@ void RenderLabel::wheelEvent(QWheelEvent* event)
 	}
 	move_center = event->pos();
 	qDebug() << move_center;
-	is_update_transformed = true;
 }
 
 void RenderLabel::paintEvent(QPaintEvent* event)
